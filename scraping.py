@@ -19,9 +19,11 @@ host_url = "http://site24.way2sms.com/Login1.action" ;
 
 data = {'username' : username, 'password' : password} 
 
-resp = requests.post(host_url , data = urllib.parse.urlencode(data) , headers={'Content-Type' :'application/x-www-form-urlencoded' , 'User-Agent': 'Mozilla/5.0 }'}) ;
+session = requests.Session() ;
+
+resp = session.post(host_url , data = urllib.parse.urlencode(data) , headers={'Content-Type' :'application/x-www-form-urlencoded' , 'User-Agent': 'Mozilla/5.0 }'}) ;
 
 
  
-mytoken = re.search("Token=([\w\d.]+)" , resp.text).group[1] ;
- 
+mytoken = re.search("Token=([\w\d.]+)" , resp.text).group(1) ;
+

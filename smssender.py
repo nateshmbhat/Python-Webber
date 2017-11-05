@@ -18,8 +18,9 @@ class smssender:
 		self.session = requests.Session() ;
 
 
-	def login_to_way2sms(self , username =self.username , password =self.password ):
-
+	def login_to_way2sms(self ):
+		username = self.username ; 
+		password = self.password ;
 		host_url = "http://site24.way2sms.com/Login1.action" ;
 		data = {'username' : username, 'password' : password} 
 		resp = self.session.post(host_url , data = urllib.parse.urlencode(data) , headers={'Content-Type' :'application/x-www-form-urlencoded' , 'User-Agent': 'Mozilla/5.0'}) ;
@@ -27,19 +28,21 @@ class smssender:
 		self.sessiontoken = re.search("Token=([\w\d.]+)" , resp.text).group(1) ;
 
 
-	def send_sms_using_way2sms(self):
+	def send_sms_using_way2sms(self , mobile = '' , message = '' ):
+
+		if not mobile:mobile=input("Enter recipient phone number : ") ;
+		if not message:message = input("Enter message : ") ;
 
 		message_url = "http://site24.way2sms.com/smstoss.action" ;
 
 		data = {
 		'ssaction' : 'ss' , 
 		'Token' : self.sessiontoken , 
-		'mobile' : input("Enter mobile number to send : ")  , 
-		'message' : input("Enter message : ")  ,
+		'mobile' : mobile , 
+		'message' : message
 		}
 
-		resp = self.session.post(message_url , data  = urllib.parse.urlencode(data) , headers={'Content-Type' :'application/x-www-form-urlencoded' , 'User-Agent': 'Mozilla/5.0 }'}) ;
-		print(resp.text) ;
+		resp = self.session.post(message_url , data  = urllib.parse.urlencode(data) , headers={'Content-Type' :'application/x-www-form-urlencoded' , 'User-Agent': 'Mozilla/5.0'}) ;
 
 
 if(__name__=='__main__'):

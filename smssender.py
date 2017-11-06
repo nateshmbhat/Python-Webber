@@ -12,8 +12,8 @@ class smssender:
 		with open("../config.json") as f:
 			creds = json.load(f) ;
 		#----------------------------------->
-		self.username = creds.get('Natesh').get('number') ;
-		self.password = creds.get('Natesh').get('password') ; 
+		self.username = creds.get('way2sms_Natesh').get('number') ;
+		self.password = creds.get('way2sms_Natesh').get('password') ; 
 
 		self.session = requests.Session() ;
 

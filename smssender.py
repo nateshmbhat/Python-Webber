@@ -8,24 +8,33 @@ import re
 #----------------------------------->
 class smssender:
 
-	def __init__(self):
-		with open("../config.json") as f:
-			creds = json.load(f) ;
-		#----------------------------------->
-		self.username = creds.get('way2sms_Natesh').get('number') ;
-		self.password = creds.get('way2sms_Natesh').get('password') ; 
-
+	def __init__(self ):		
 		self.session = requests.Session() ;
 
 
-	def login_to_way2sms(self ):
-		username = self.username ; 
-		password = self.password ;
+	def login_to_way2sms(self  , username = '' , password=''):
+
+		try:
+			with open("../config.json") as f:
+				creds = json.load(f) ;
+			#----------------------------------->
+			username = creds.get('way2sms_Natesh').get('number') ;
+			password = creds.get('way2sms_Natesh').get('password') ; 
+
+		except Exception as e:
+			pass ; 
+
+
 		host_url = "http://site24.way2sms.com/Login1.action" ;
 		data = {'username' : username, 'password' : password} 
 		resp = self.session.post(host_url , data = urllib.parse.urlencode(data) , headers={'Content-Type' :'application/x-www-form-urlencoded' , 'User-Agent': 'Mozilla/5.0'}) ;
 
-		self.sessiontoken = re.search("Token=([\w\d.]+)" , resp.text).group(1) ;
+		self.sessiontoken = re.search("Token=([\w\d.]+)" , resp.text)
+		if(self.sessiontoken):
+			self.sessiontoken = self.sessiontoken.group(1) ;
+		else:
+			print("Wrong Mobile number or password ! " ) ;
+
 
 
 	def send_sms_using_way2sms(self , mobile = '' , message = '' ):

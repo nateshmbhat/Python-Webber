@@ -5,6 +5,13 @@ import json
 import re 
 
 #LOAD THE REQURIED CREDENTIALS TO SEND THE MESSAGES FROM THE CONFIG FILE 
+
+class Error(Exception):
+	pass ;
+class Invalid_credentials(Error):
+	def __init__(self , message):
+		self.message = message ; 
+
 #----------------------------------->
 class smssender:
 
@@ -33,11 +40,11 @@ class smssender:
 		if(self.sessiontoken):
 			self.sessiontoken = self.sessiontoken.group(1) ;
 		else:
-			print("Wrong Mobile number or password ! " ) ;
+			raise Invalid_credentials ("Invalid phone number or password  ! ") ; 
 
 
 
-	def send_sms_using_way2sms(self , mobile = '' , message = '' ):
+	def send_sms(self , mobile = '' , message = '' ):
 
 		if not mobile:mobile=input("Enter recipient phone number : ") ;
 		if not message:message = input("Enter message : ") ;
@@ -57,4 +64,4 @@ class smssender:
 if(__name__=='__main__'):
 	smssender = smssender() ; 
 	smssender.login_to_way2sms() ; 
-	smssender.send_sms_using_way2sms() ;
+	smssender.send_sms() ;
